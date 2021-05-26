@@ -1,3 +1,4 @@
+from enum import unique
 from .. import db, flask_bcrypt
 
 
@@ -6,9 +7,11 @@ class User(db.Model):
     __tablename__ = "user"
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    public_id = db.Column(db.String(100), unique=True)
     email = db.Column(db.String(255), unique=True)
     name = db.Column(db.String(50))
     password = db.Column(db.String(100))
+    joined_at = db.Column(db.DateTime, nullable=False)
 
     @property
     def password(self):
