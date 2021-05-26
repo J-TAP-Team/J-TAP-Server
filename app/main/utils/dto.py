@@ -1,4 +1,3 @@
-from typing_extensions import Required
 from flask.globals import request
 from flask_restplus import Namespace, fields
 
