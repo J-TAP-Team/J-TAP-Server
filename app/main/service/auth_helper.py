@@ -9,12 +9,12 @@ class Auth:
             # fetch the user data
             user = User.query.filter_by(email=data.get("email")).first()
             if user and user.check_password(data.get("password")):
-                auth_token = user.encode_auth_token(user.id)
+                auth_token = user.encode_auth_token(user.user_id)
                 if auth_token:
                     response_object = {
                         "status": "success",
                         "message": "Successfully logged in.",
-                        "Authorization": auth_token.decode(),
+                        "Authorization": auth_token,
                     }
                     return response_object, 200
             else:

@@ -13,7 +13,7 @@ class User(db.Model):
     public_id = db.Column(db.String(100), unique=True)
     email = db.Column(db.String(255), unique=True)
     name = db.Column(db.String(50))
-    password = db.Column(db.String(100))
+    password_hash = db.Column(db.String(100))
     joined_at = db.Column(db.DateTime, nullable=False)
 
     @property
@@ -30,7 +30,7 @@ class User(db.Model):
         return flask_bcrypt.check_password_hash(self.password_hash, password)
 
     @staticmethod
-    def encode_auth_token(self, user_id):
+    def encode_auth_token(user_id):
 
         try:
             payload = {
@@ -59,4 +59,4 @@ class User(db.Model):
             return "Invalid token. Please log in again."
 
     def __repr__(self):
-        return "<user '{}'>".format(self.username)
+        return "<user '{}'>".format(self.name)
