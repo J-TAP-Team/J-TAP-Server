@@ -76,3 +76,10 @@ class Auth:
                 "message": "Provide a valid auth token.",
             }
             return response_object, 401
+
+    @staticmethod
+    def get_user_id_with_token(request):
+        auth_token = request.headers.get("Authorization")
+        resp = User.decode_auth_token(auth_token)
+
+        return resp

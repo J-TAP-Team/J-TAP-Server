@@ -2,6 +2,7 @@ from flask import request
 from flask_restplus import Resource
 
 from ..utils.dto import PictureDto
+from ..service.picture_service import *
 
 from app.main.utils.decorator import token_required
 
@@ -24,7 +25,7 @@ class PictureList(Resource):
     @api.doc("upload a new picture")
     @api.expect(_picture, validate=True)
     def post(self):
-        pass
+        return upload_new_picture(request=request)
 
 
 @api.route("/<id>")
