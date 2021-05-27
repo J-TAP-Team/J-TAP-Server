@@ -11,7 +11,7 @@ api = PictureDto.api
 _picture = PictureDto.picture
 
 
-@api.route("/")
+@api.route("")
 class PictureList(Resource):
     @token_required
     @api.doc("list_of_my_pictures")
