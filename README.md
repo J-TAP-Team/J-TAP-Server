@@ -1,2 +1,5 @@
 # J-TAP-Server
-J-TAP
+
+J-TAP의 서버입니다.
+
+

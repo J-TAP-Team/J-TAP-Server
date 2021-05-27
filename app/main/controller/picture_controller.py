@@ -23,7 +23,7 @@ class PictureList(Resource):
     @token_required
     @api.response(201, "Picture successfully uploaded")
     @api.doc("upload a new picture")
-    @api.expect(_picture, validate=True)
+    @api.expect(_picture, validate=False)
     def post(self):
         return upload_new_picture(request=request)
 
