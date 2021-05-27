@@ -72,6 +72,26 @@ def delete_picture(request, id):
     return response, 204
 
 
+def update_picture(request, id):
+    resp = Auth.get_user_id_with_token(request)
+    picture = (
+        Picture.query.filter(Picture.picture_id == id)
+        .filter(Picture.user_id == resp)
+        .first()
+    )
+    if picture:
+        picture.description = request.json["description"]
+        db.session.commit()
+    else:
+        response = {"status": "fail", "message": "This picture does not exists"}
+        return response, 404
+
+    response = {
+        "status": "success",
+        "message": "Successfully updated picture description",
+    }
+
+
 def save_changes(data):
     try:
         db.session.add(data)

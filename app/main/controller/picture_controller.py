@@ -42,7 +42,7 @@ class Diary(Resource):
     @api.doc("modify a picture")
     @api.marshal_with(_picture)
     def put(self, id):
-        pass
+        return update_picture(request=request, id=id)
 
     @token_required
     @api.doc("delete a picture")
