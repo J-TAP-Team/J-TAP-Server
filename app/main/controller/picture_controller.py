@@ -31,7 +31,7 @@ class PictureList(Resource):
 @api.route("/<id>")
 @api.param("id", "The Picture identifier")
 @api.response(404, "Picture not found")
-class Diary(Resource):
+class Picture(Resource):
     @token_required
     @api.doc("get a picture")
     @api.marshal_with(_picture)
