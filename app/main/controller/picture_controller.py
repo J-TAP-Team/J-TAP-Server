@@ -48,4 +48,4 @@ class Diary(Resource):
     @api.doc("delete a picture")
     @api.marshal_with(_picture)
     def delete(self, id):
-        pass
+        return delete_picture(request=request, id=id)
