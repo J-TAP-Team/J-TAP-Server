@@ -41,3 +41,12 @@ class User(Resource):
             api.abort(404)
         else:
             return user
+
+
+@api.route("/my")
+class MyProfile(Resource):
+    @token_required
+    @api.doc("get my profile")
+    @api.marshal_with(_user)
+    def get(self):
+        return get_my_user(request)

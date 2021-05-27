@@ -3,6 +3,7 @@ import datetime
 
 from app.main import db
 from app.main.model.user import User
+from .auth_helper import Auth
 
 
 def save_new_user(data):
@@ -36,6 +37,11 @@ def get_all_users():
 
 def get_a_user(public_id):
     return User.query.filter_by(public_id=public_id).first()
+
+
+def get_my_user(request):
+    resp = Auth.get_user_id_with_token(request)
+    return User.query.filter_by(user_id=resp).first()
 
 
 def save_changes(data):
