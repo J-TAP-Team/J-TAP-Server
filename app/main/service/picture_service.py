@@ -36,6 +36,24 @@ def upload_new_picture(request):
     return response_object, 201
 
 
+def get_all_pictures(request):
+    resp = Auth.get_user_id_with_token(request)
+    return Picture.query.filter_by(user_id=resp).all()
+
+
+def get_a_picture(request, id):
+
+    picture = Picture.query.filter(Picture.picture_id == id).first()
+    if picture.user_id != Auth.get_user_id_with_token(request):
+        response = {
+            "status": "fail",
+            "message": "You don't have permission on this object",
+        }
+        return response, 403
+
+    return picture, 200
+
+
 def save_changes(data):
     try:
         db.session.add(data)

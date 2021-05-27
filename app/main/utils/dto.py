@@ -31,7 +31,10 @@ class PictureDto:
     picture = api.model(
         "picture",
         {
+            "picture_id": fields.Integer(description="The Picture Id"),
+            "user_id": fields.Integer(description="User Id"),
             "image": fields.String(required=True, description="The image url"),
             "description": fields.String(description="The description of Picture"),
+            "created_at": fields.DateTime(description="The creation datetime"),
         },
     )

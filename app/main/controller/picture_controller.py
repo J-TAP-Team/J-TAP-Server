@@ -18,7 +18,7 @@ class PictureList(Resource):
     @api.marshal_list_with(_picture, envelope="data")
     @api.doc("get list of my pictures")
     def get(self):
-        pass
+        return get_all_pictures(request=request)
 
     @token_required
     @api.response(201, "Picture successfully uploaded")
@@ -36,7 +36,7 @@ class Diary(Resource):
     @api.doc("get a picture")
     @api.marshal_with(_picture)
     def get(self, id):
-        pass
+        return get_a_picture(request=request, id=id)
 
     @token_required
     @api.doc("modify a picture")
