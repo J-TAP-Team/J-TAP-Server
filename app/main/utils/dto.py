@@ -34,6 +34,7 @@ class PictureDto:
             "picture_id": fields.Integer(description="The Picture Id"),
             "user_id": fields.Integer(description="User Id"),
             "image": fields.String(description="The image url"),
+            "filename": fields.String(description="The filename of image"),
             "description": fields.String(description="The description of Picture"),
             "created_at": fields.DateTime(description="The creation datetime"),
         },

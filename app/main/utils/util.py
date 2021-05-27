@@ -1,5 +1,6 @@
 import boto3
 from ..config import s3_config
+from app.main import config
 
 
 class Util:
@@ -15,7 +16,9 @@ class Util:
             region = s3_config["region"]
 
             bucket_name = s3_config["bucket_name"]
-            s3.upload_fileobj(file, bucket_name, filename)
+            s3.upload_fileobj(
+                file, bucket_name, filename, ExtraArgs={"ACL": "public-read"}
+            )
 
             url = "https://s3-%s.amazonaws.com/%s/%s" % (region, bucket_name, filename)
 

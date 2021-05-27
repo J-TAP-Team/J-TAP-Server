@@ -1,5 +1,6 @@
-import datetime
-import boto3
+import string
+import random
+
 from werkzeug.utils import secure_filename
 
 from app.main import db
@@ -13,11 +14,23 @@ def upload_new_picture(request):
     resp = Auth.get_user_id_with_token(request)
 
     file = request.files["file"]
-    filename = secure_filename(file.filename)
+    extension = secure_filename(file.filename).split(".")[1]
+
+    string_pool = string.ascii_letters + string.digits
+
+    while True:
+
+        filename = (
+            "".join([random.choice(string_pool) for _ in range(20)]) + "." + extension
+        )
+        picture = Picture.query.filter_by(filename=filename).first()
+
+        if not picture:
+            break
 
     url = Util.s3upload(file, filename)
 
-    new_picture = Picture(user_id=resp, image=url, description=None)
+    new_picture = Picture(user_id=resp, image=url, filename=filename, description=None)
 
     try:
         save_changes(new_picture)
