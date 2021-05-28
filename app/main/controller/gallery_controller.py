@@ -54,7 +54,7 @@ class Gallery(Resource):
     @api.doc("modify a gallery")
     @api.marshal_with(_gallery)
     def put(self, id):
-        pass
+        return update_gallery(request=request, id=id)
 
     @token_required
     @api.doc("delete a gallery")

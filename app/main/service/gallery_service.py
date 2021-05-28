@@ -100,6 +100,27 @@ def get_a_gallery(request, id):
     return data, 200
 
 
+def update_gallery(request, id):
+    resp = Auth.get_user_id_with_token(request)
+    gallery = (
+        Gallery.query.filter(Gallery.gallery_id == id)
+        .filter(Gallery.user_id == resp)
+        .first()
+    )
+    if gallery:
+        gallery.name = request.json["name"]
+        gallery.description = request.json["description"]
+        db.session.commit()
+    else:
+        response = {"status": "fail", "message": "This gallery does not exists"}
+        return response, 404
+
+    response = {
+        "status": "success",
+        "message": "Successfully updated gallery",
+    }
+
+
 def delete_gallery(request, id):
     resp = Auth.get_user_id_with_token(request)
     gallery = (
