@@ -39,3 +39,56 @@ class PictureDto:
             "created_at": fields.DateTime(description="The creation datetime"),
         },
     )
+
+
+class GalleryDto:
+    api = Namespace("gallery", description="gallery related operations")
+    gallery = api.model(
+        "gallery",
+        {
+            "gallery_id": fields.Integer(description="The Gallery Id"),
+            "user_id": fields.Integer(description="User Id"),
+            "name": fields.String(description="The name of gallery"),
+            "description": fields.String(description="The description of Gallery"),
+            "created_at": fields.DateTime(description="The creation datetime"),
+        },
+    )
+
+
+class CommentDto:
+    api = Namespace("comment", description="comment related operations")
+    comment = api.model(
+        "comment",
+        {
+            "comment_id": fields.Integer(description="The Comment Id"),
+            "user_id": fields.Integer(description="User Id"),
+            "gallery_id": fields.Integer(description="Gallery Id"),
+            "comment": fields.String(description="Comment contents"),
+            "created_at": fields.DateTime(description="The creation datetime"),
+        },
+    )
+
+
+class LikesDto:
+    api = Namespace("likes", description="likes related operations")
+    likes = api.model(
+        "likes",
+        {
+            "likes_id": fields.Integer(description="The Comment Id"),
+            "user_id": fields.Integer(description="User Id"),
+            "gallery_id": fields.Integer(description="Gallery Id"),
+            "created_at": fields.DateTime(description="The creation datetime"),
+        },
+    )
+
+
+class LinkedDto:
+    api = Namespace("linked", description="link related operations")
+    linked = api.model(
+        "linked",
+        {
+            "linked_id": fields.Integer(description="The Comment Id"),
+            "user_id": fields.Integer(description="User Id"),
+            "picture_id": fields.Integer(description="Picture Id"),
+        },
+    )
