@@ -1,21 +1,25 @@
+from app.main.service.comment_service import get_all_comments_on_this_gallery
+import re
+
 from flask import request
 from flask_restplus import Resource
 
 from ..service.gallery_service import *
-from ..utils.dto import GalleryDto, PictureDto
+from ..utils.dto import GalleryDto, CommentDto
 
 from app.main.utils.decorator import token_required
 
 
 api = GalleryDto.api
 _gallery = GalleryDto.gallery
+_comment = CommentDto.comment
 
 
 @api.route("")
 class GalleryList(Resource):
     @token_required
     @api.doc("list_of_gallery")
-    @api.marshal_list_with(_gallery, envelope="data")
+    @api.marshal_list_with(_gallery)
     @api.doc("get list of gallery")
     def get(self):
         return get_all_galleries(request=request)
@@ -64,16 +68,10 @@ class Gallery(Resource):
 @api.response(404, "Gallery not found")
 class Comments(Resource):
     @token_required
-    @api.doc("get a comments of this gallery")
-    @api.marshal_with(_gallery)
+    @api.marshal_list_with(_comment)
+    @api.doc("get all comments on this gallery")
     def get(self, id):
-        pass
-
-    @token_required
-    @api.doc("get a gallery")
-    @api.marshal_with(_gallery)
-    def post(self, id):
-        pass
+        return get_all_comments_on_this_gallery(request=request, id=id)
 
 
 @api.route("/like")

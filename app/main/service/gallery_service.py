@@ -100,6 +100,24 @@ def get_a_gallery(request, id):
     return data, 200
 
 
+def delete_gallery(request, id):
+    resp = Auth.get_user_id_with_token(request)
+    gallery = (
+        Gallery.query.filter(Gallery.gallery_id == id)
+        .filter(Gallery.user_id == resp)
+        .first()
+    )
+    if gallery:
+        db.session.delete(gallery)
+        db.session.commit()
+    else:
+        response = {"status": "fail", "message": "This gallery does not exists"}
+        return response, 404
+
+    response = {"status": "success", "message": "Successfully delete gallery"}
+    return response, 204
+
+
 def like_this_gallery(request):
 
     resp = Auth.get_user_id_with_token(request)
@@ -132,24 +150,6 @@ def like_this_gallery(request):
 
     response = {"status": "success", "message": "Successfully like this gallery"}
     return response, 201
-
-
-def delete_gallery(request, id):
-    resp = Auth.get_user_id_with_token(request)
-    gallery = (
-        Gallery.query.filter(Gallery.gallery_id == id)
-        .filter(Gallery.user_id == resp)
-        .first()
-    )
-    if gallery:
-        db.session.delete(gallery)
-        db.session.commit()
-    else:
-        response = {"status": "fail", "message": "This gallery does not exists"}
-        return response, 404
-
-    response = {"status": "success", "message": "Successfully delete gallery"}
-    return response, 204
 
 
 def save_changes(data):
