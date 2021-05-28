@@ -55,25 +55,6 @@ class GalleryDto:
     )
 
 
-class DetailGalleryDto:
-    api = Namespace(
-        "detailed_gallery", description="detailed gallery related operations"
-    )
-    gallery = api.model(
-        "detailed_gallery",
-        {
-            "gallery_id": fields.Integer(description="The Gallery Id"),
-            "user_id": fields.Interger(description="User id"),
-            "name": fields.String(description="The name of gallery"),
-            "description": fields.String(description="The description of Gallery"),
-            "created_at": fields.DateTime(description="The creation datetime"),
-            "pictures": fields.List(description="The list of pictures"),
-            "like": fields.Integer(description="Count of likes"),
-            "isLiked": fields.Boolean(description="Is the user like this gallery"),
-        },
-    )
-
-
 class CommentDto:
     api = Namespace("comment", description="comment related operations")
     comment = api.model(

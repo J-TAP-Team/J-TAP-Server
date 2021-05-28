@@ -1,6 +1,9 @@
+from re import S
 from app.main import db
 from app.main.model.gallery import *
 from .auth_helper import Auth
+
+import json
 
 
 def create_new_gallery(request):
@@ -14,11 +17,40 @@ def create_new_gallery(request):
 
     try:
         save_changes(new_gallery)
+
     except Exception as e:
         response_object = {"status": "fail", "message": e}
+
         return response_object, 400
 
     response_object = {"status": "success", "message": "Successfully created."}
+    return response_object, 201
+
+
+def get_my_gallery(request):
+
+    resp = Auth.get_user_id_with_token(request)
+    return Gallery.query.filter(user_id=resp).first()
+
+
+def add_pictures(request):
+
+    data = request.json
+
+    try:
+        gallery_id = data["gallery_id"]
+        picture_list = data["pictures"]
+
+        for id in picture_list:
+            new_link = LinkedGalleryPicture(gallery_id=gallery_id, picture_id=id)
+
+            save_changes(new_link)
+    except Exception as e:
+        response_object = {"status": "fail", "message": e}
+
+        return response_object, 400
+
+    response_object = {"status": "success", "message": "Successfully added."}
     return response_object, 201
 
 
@@ -30,19 +62,37 @@ def get_a_gallery(request, id):
 
     gallery = Gallery.query.filter(Gallery.gallery_id == id).first()
 
-    sql = """
-        SELECT p.picture_id, p.user_id, p.image, p.filename, p.description, p.created_at
-        FROM picture p
-        LEFT OUTER JOIN linkedgallerypicture l
-        WHERE l.gallery_id = {}
-    """
+    data = {
+        "gallery_id": gallery.gallery_id,
+        "user_id": gallery.user_id,
+        "name": gallery.name,
+        "description": gallery.description,
+        "created_at": str(gallery.created_at),
+    }
 
-    pictures = db.session.execute(sql)
-    print(pictures)
+    row = (
+        db.session.query(Picture)
+        .join(
+            LinkedGalleryPicture, Picture.picture_id == LinkedGalleryPicture.picture_id
+        )
+        .filter(LinkedGalleryPicture.gallery_id == id)
+    ).all()
 
-    gallery["pictures"] = pictures
+    pictures = []
 
-    return gallery, 200
+    for r in row:
+        obj = {
+            "picture_id": r.picture_id,
+            "image": r.image,
+            "filename": r.filename,
+            "description": r.description,
+            "created_at": str(r.created_at),
+        }
+        pictures.append(obj)
+
+    data["pictures"] = pictures
+    print(data)
+    return data, 200
 
 
 def delete_gallery(request, id):
