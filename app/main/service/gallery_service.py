@@ -1,4 +1,3 @@
-from re import S
 from app.main import db
 from app.main.model.gallery import *
 from .auth_helper import Auth
@@ -60,6 +59,10 @@ def get_a_gallery(request, id):
 
     gallery = Gallery.query.filter(Gallery.gallery_id == id).first()
 
+    if not gallery:
+        response = {"status": "fail", "message": "This gallery does not exists"}
+        return response, 404
+
     data = {
         "gallery_id": gallery.gallery_id,
         "user_id": gallery.user_id,
@@ -90,7 +93,45 @@ def get_a_gallery(request, id):
 
     data["pictures"] = pictures
 
+    count = db.session.query(Likes).filter(Likes.gallery_id == id).count()
+
+    data["like"] = count
+
     return data, 200
+
+
+def like_this_gallery(request):
+
+    resp = Auth.get_user_id_with_token(request)
+    data = request.json
+
+    try:
+        like = (
+            Likes.query.filter(Likes.user_id == resp)
+            .filter(Likes.gallery_id == data["gallery_id"])
+            .first()
+        )
+
+        if like:
+            db.session.delete(like)
+            db.session.commit()
+
+            response = {
+                "status": "success",
+                "message": "Successfully unlike this gallery",
+            }
+            return response, 204
+
+        else:
+            new_like = Likes(gallery_id=data["gallery_id"], user_id=resp)
+            save_changes(new_like)
+
+    except Exception as e:
+        response = {"status": "fail", "message": e}
+        return response, 404
+
+    response = {"status": "success", "message": "Successfully like this gallery"}
+    return response, 201
 
 
 def delete_gallery(request, id):

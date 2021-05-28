@@ -67,7 +67,7 @@ class Comments(Resource):
     @api.doc("get a comments of this gallery")
     @api.marshal_with(_gallery)
     def get(self, id):
-        return
+        pass
 
     @token_required
     @api.doc("get a gallery")
@@ -80,6 +80,5 @@ class Comments(Resource):
 class Likes(Resource):
     @token_required
     @api.doc("Click a like button of this Gallery")
-    @api.marshal_with(_gallery)
-    def post(self, id):
-        pass
+    def post(self):
+        return like_this_gallery(request=request)
