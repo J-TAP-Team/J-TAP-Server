@@ -9,7 +9,6 @@ from app.main.utils.decorator import token_required
 
 api = GalleryDto.api
 _gallery = GalleryDto.gallery
-_picture = PictureDto.picture
 
 
 @api.route("")
@@ -57,7 +56,7 @@ class Gallery(Resource):
     @api.doc("delete a gallery")
     @api.marshal_with(_gallery)
     def delete(self, id):
-        pass
+        return delete_gallery(request=request, id=id)
 
 
 @api.route("/<id>/comments")

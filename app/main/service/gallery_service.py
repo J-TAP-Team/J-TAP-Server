@@ -3,8 +3,6 @@ from app.main import db
 from app.main.model.gallery import *
 from .auth_helper import Auth
 
-import json
-
 
 def create_new_gallery(request):
 
@@ -91,7 +89,7 @@ def get_a_gallery(request, id):
         pictures.append(obj)
 
     data["pictures"] = pictures
-    print(data)
+
     return data, 200
 
 
