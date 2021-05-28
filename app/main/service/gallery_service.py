@@ -51,6 +51,31 @@ def add_pictures(request):
     return response_object, 201
 
 
+def except_pictures(request):
+
+    resp = Auth.get_user_id_with_token(request)
+    data = request.json
+
+    for i in data["pictures"]:
+
+        link = (
+            LinkedGalleryPicture.query.filter(
+                LinkedGalleryPicture.gallery_id == data["gallery_id"]
+            )
+            .filter(LinkedGalleryPicture.picture_id == i)
+            .filter(Gallery.user_id == resp)
+            .first()
+        )
+        if link:
+            db.session.delete(link)
+            db.session.commit()
+        else:
+            continue
+
+    response = {"status": "success", "message": "Successfully delete gallery"}
+    return response, 204
+
+
 def get_all_galleries(request):
     return Gallery.query.all()
 

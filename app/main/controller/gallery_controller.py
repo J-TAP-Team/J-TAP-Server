@@ -40,6 +40,12 @@ class Picture(Resource):
     def post(self):
         return add_pictures(request=request)
 
+    @token_required
+    @api.response(404, "Gallery not fount")
+    @api.doc("except picture in gallery")
+    def delete(self):
+        return except_pictures(request=request)
+
 
 @api.route("/<id>")
 @api.param("id", "The Gallery identifier")
