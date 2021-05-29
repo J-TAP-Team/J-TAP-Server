@@ -147,14 +147,10 @@ def update_gallery(request, id):
         gallery.name = request.json["name"]
         gallery.description = request.json["description"]
         db.session.commit()
+        return gallery
     else:
         response = {"status": "fail", "message": "This gallery does not exists"}
         return response, 404
-
-    response = {
-        "status": "success",
-        "message": "Successfully updated gallery",
-    }
 
 
 def delete_gallery(request, id):
