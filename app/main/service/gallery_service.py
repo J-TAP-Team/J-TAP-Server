@@ -39,9 +39,20 @@ def add_pictures(request):
         picture_list = data["pictures"]
 
         for id in picture_list:
-            new_link = LinkedGalleryPicture(gallery_id=gallery_id, picture_id=id)
 
-            save_changes(new_link)
+            link = (
+                LinkedGalleryPicture.query.filter(
+                    LinkedGalleryPicture.gallery_id == gallery_id
+                )
+                .filter(LinkedGalleryPicture.picture_id == id)
+                .first()
+            )
+
+            if not link:
+
+                new_link = LinkedGalleryPicture(gallery_id=gallery_id, picture_id=id)
+                save_changes(new_link)
+
     except Exception as e:
         response_object = {"status": "fail", "message": e}
 
