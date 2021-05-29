@@ -17,9 +17,8 @@ _comment = CommentDto.comment
 class Comments(Resource):
     @token_required
     @api.doc("get a gallery")
-    @api.marshal_with(_comment)
     def post(self):
-        return create_comment(request=request, id=id)
+        return create_comment(request=request)
 
 
 @api.route("/<id>")
