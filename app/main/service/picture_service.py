@@ -88,14 +88,10 @@ def update_picture(request, id):
     if picture:
         picture.description = request.json["description"]
         db.session.commit()
+        return picture
     else:
         response = {"status": "fail", "message": "This picture does not exists"}
         return response, 404
-
-    response = {
-        "status": "success",
-        "message": "Successfully updated picture description",
-    }
 
 
 def save_changes(data):
