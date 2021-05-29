@@ -15,7 +15,7 @@ _picture = PictureDto.picture
 class PictureList(Resource):
     @token_required
     @api.doc("list_of_my_pictures")
-    @api.marshal_list_with(_picture, envelope="data")
+    @api.marshal_list_with(_picture)
     @api.doc("get list of my pictures")
     def get(self):
         return get_all_pictures(request=request)
