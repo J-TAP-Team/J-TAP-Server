@@ -29,9 +29,9 @@ pip install -r requirements.txt
 
 ### db 생성
 ```
-python manage.py init
-python manage.py migrate
-python manage.py upgrade
+python manage.py db init
+python manage.py db migrate
+python manage.py db upgrade
 ```
 
 ### 서버 실행
