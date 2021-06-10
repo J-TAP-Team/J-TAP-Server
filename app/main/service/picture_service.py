@@ -38,7 +38,14 @@ def upload_new_picture(request):
         response_object = {"status": "fail", "message": e}
         return response_object, 400
 
-    response_object = {"status": "success", "message": "Successfully created."}
+    response_object = {
+        "picture_id": new_picture.picture_id,
+        "user_id": new_picture.user_id,
+        "image": new_picture.image,
+        "filename": new_picture.filename,
+        "description": new_picture.description,
+        "created_at": str(new_picture.created_at),
+    }
     return response_object, 201
 
 

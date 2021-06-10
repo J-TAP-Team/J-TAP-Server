@@ -20,7 +20,13 @@ def create_new_gallery(request):
 
         return response_object, 400
 
-    response_object = {"status": "success", "message": "Successfully created."}
+    response_object = {
+        "gallery_id": new_gallery.gallery_id,
+        "user_id": new_gallery.user_id,
+        "name": new_gallery.name,
+        "description": new_gallery.description,
+        "created_at": str(new_gallery.created_at),
+    }
     return response_object, 201
 
 
