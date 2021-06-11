@@ -1,6 +1,5 @@
 import boto3
 from ..config import s3_config
-from app.main import config
 
 
 class Util:
@@ -26,3 +25,20 @@ class Util:
             return e
 
         return url
+
+    def s3delete(filename):
+
+        try:
+            s3 = boto3.client(
+                "s3",
+                aws_access_key_id=s3_config["AccessKeyId"],
+                aws_secret_access_key=s3_config["SecretKey"],
+            )
+
+            bucket_name = s3_config["bucket_name"]
+            s3.delete_object(bucket_name, filename)
+
+        except Exception as e:
+            return e
+
+        return {"message": "Successfully deleted"}
