@@ -46,6 +46,5 @@ class Picture(Resource):
 
     @token_required
     @api.doc("delete a picture")
-    @api.marshal_with(_picture)
     def delete(self, id):
         return delete_picture(request=request, id=id)
