@@ -75,14 +75,19 @@ def delete_picture(request, id):
         .first()
     )
     if picutre:
-        db.session.delete(picutre)
-        db.session.commit()
+        try:
+            db.session.delete(picutre)
+            db.session.commit()
+            Util.s3delete(picutre.filename)
+
+            response = {"status": "success", "message": "Successfully delete picture"}
+            return response, 204
+        except Exception as e:
+            print(e)
+            return e
     else:
         response = {"status": "fail", "message": "This picture does not exists"}
         return response, 404
-
-    response = {"status": "success", "message": "Successfully delete picture"}
-    return response, 204
 
 
 def update_picture(request, id):
